@@ -1,0 +1,23 @@
+[0;1;32m●[0m bluetooth.service - Bluetooth service
+     Loaded: loaded (]8;;file://scar/usr/lib/systemd/system/bluetooth.service\/usr/lib/systemd/system/bluetooth.service]8;;\; [0;1;32menabled[0m; preset: [0;1;38:5:185mdisabled[0m)
+     Active: [0;1;32mactive (running)[0m since Sat 2025-12-06 09:54:23 -03; 6 days ago
+ Invocation: 206d34e5714148d0bbf9594abd7f3a56
+       Docs: ]8;;man:bluetoothd(8)\man:bluetoothd(8)]8;;\
+   Main PID: 589 (bluetoothd)
+     Status: "[0;1;36mRunning[0m"
+      Tasks: 1[0;38;5;245m (limit: 19024)[0m
+     Memory: 2.2M (peak: 4M)
+        CPU: 1.073s
+     CGroup: /system.slice/bluetooth.service
+             └─[0;38;5;245m589 /usr/lib/bluetooth/bluetoothd[0m
+
+dez 09 13:26:23 scar bluetoothd[589]: Endpoint unregistered: sender=:1.231 path=/MediaEndpoint/A2DPSource/aptx_ll_0
+dez 09 13:26:23 scar bluetoothd[589]: Endpoint unregistered: sender=:1.231 path=/MediaEndpoint/A2DPSource/aptx_ll_duplex_1
+dez 09 13:26:23 scar bluetoothd[589]: Endpoint unregistered: sender=:1.231 path=/MediaEndpoint/A2DPSource/aptx_ll_duplex_0
+dez 09 13:26:23 scar bluetoothd[589]: Endpoint unregistered: sender=:1.231 path=/MediaEndpoint/A2DPSource/faststream
+dez 09 13:26:23 scar bluetoothd[589]: Endpoint unregistered: sender=:1.231 path=/MediaEndpoint/A2DPSource/faststream_duplex
+dez 09 13:26:23 scar bluetoothd[589]: Endpoint unregistered: sender=:1.231 path=/MediaEndpoint/A2DPSink/opus_05
+dez 09 13:26:23 scar bluetoothd[589]: Endpoint unregistered: sender=:1.231 path=/MediaEndpoint/A2DPSource/opus_05
+dez 09 13:26:23 scar bluetoothd[589]: Endpoint unregistered: sender=:1.231 path=/MediaEndpoint/A2DPSink/opus_05_duplex
+dez 09 13:26:23 scar bluetoothd[589]: Endpoint unregistered: sender=:1.231 path=/MediaEndpoint/A2DPSource/opus_05_duplex
+dez 09 13:26:23 scar bluetoothd[589]: Battery Provider Manager destroyed
