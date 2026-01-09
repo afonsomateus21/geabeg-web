@@ -5,59 +5,93 @@ import { MonthNavigator } from "../components/MonthNavigator";
 import { HiCheck } from "react-icons/hi";
 import { MdOutlineArrowDropDown, MdOutlineArrowDropUp } from "react-icons/md";
 import { HeaderIconButton } from "../components/HeaderIconButton";
+import type { ProductPageFilterId } from "../types/common";
+import { productPageFilters } from "../utils/constants";
+import { DonationCard } from "../components/DonationCard";
+import { IoMdAdd } from "react-icons/io";
+import { FormModal } from "../components/FormModal";
+import { DonationForm } from "../components/DonationForm";
 
 export const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedFilter, setSelectedFilter] = useState<ProductPageFilterId>("products");
+  const [openModal, setOpenModal] = useState(false);
 
   const onPageChange = (page: number) => setCurrentPage(page);
 
+  const onCloseModal = () => setOpenModal(false);
+
   return (
     <div className="w-full p-5 flex flex-col">
-      <div className="w-full mb-4 flex justify-between">
-        <div className="flex gap-4">
-          <MonthNavigator />
-          <Button 
-            size="xs"
-            className={`
-              !bg-gray-400  
-            `}
-          >
-            <HiCheck className="mr-2 h-5 w-5" />
-            Produtos
-          </Button>
-          <Button   
-            size="xs"
-            outline
-            color="dark"
-            className={`
-              border
-            `}
-          >
-            <HiCheck className="mr-2 h-5 w-5" />
-            Doações
-          </Button>
+      <div className="w-full flex flex-col gap-4 items-start mb-4">
+        <div className="w-full flex gap-4 justify-between">
+          <div className="flex gap-4">
+            <MonthNavigator />
+            {
+              productPageFilters.map((filter) => (
+                <Button 
+                  size="xs"
+                  className={`
+                    hover:bg-gray-600
+                    border-bg-gray-400
+                    ${selectedFilter === filter.id && 'bg-gray-400'}  
+                  `}
+                  outline={selectedFilter !== filter.id}
+                  onClick={() => setSelectedFilter(filter.id)}
+                  color="gray"
+                >
+                  {selectedFilter == filter.id && <HiCheck className="mr-2 h-5 w-5" />}
+                  {filter.label}
+                </Button>
+              ))
+            }
+          </div>
+
+          <div className="flex gap-4">
+            <HeaderIconButton title="Nome">
+              <MdOutlineArrowDropUp className="h-5 w-5" />
+              <MdOutlineArrowDropDown className="h-5 w-5" />
+            </HeaderIconButton>
+
+            <HeaderIconButton title="Data">
+              <MdOutlineArrowDropDown className="h-5 w-5" />
+            </HeaderIconButton>
+
+            <HeaderIconButton title="Valor">
+              <MdOutlineArrowDropUp className="h-5 w-5" />
+              <MdOutlineArrowDropDown className="h-5 w-5" />
+            </HeaderIconButton>
+          </div>
         </div>
 
-        <div className="flex gap-4">
-          <HeaderIconButton title="Nome">
-            <MdOutlineArrowDropUp className="h-5 w-5" />
-            <MdOutlineArrowDropDown className="h-5 w-5" />
-          </HeaderIconButton>
-
-          <HeaderIconButton title="Data">
-            <MdOutlineArrowDropDown className="h-5 w-5" />
-          </HeaderIconButton>
-
-          <HeaderIconButton title="Valor">
-            <MdOutlineArrowDropUp className="h-5 w-5" />
-            <MdOutlineArrowDropDown className="h-5 w-5" />
-          </HeaderIconButton>
-        </div>
+        <Button 
+          size="sm"
+          pill
+          onClick={() => setOpenModal(true)}
+        >
+          <IoMdAdd className="mr-2 h-5 w-5" />
+          Adicionar
+        </Button>
       </div>
       {
-        [1,2,3,4,5,6,7,8].map(() => (
+        selectedFilter === "products" 
+        ? [1,2,3,4,5,6,7,8].map((_, index) => (
           <div className="mb-2">
-            <ProductCard />
+            <ProductCard 
+              key={index}
+              title="Produto 1"
+              price={23.9}
+            />
+          </div>
+        ))
+        : [1,2,3,4,5,6,7,8].map((_, index) => (
+          <div className="mb-2">
+            <DonationCard 
+              key={index}
+              title="Produto 1"
+              price={23.9}
+              donor="Anselmo Luiz"
+            />
           </div>
         ))
       }
@@ -65,6 +99,12 @@ export const Products = () => {
       <div className="flex overflow-x-auto sm:justify-center">
         <Pagination currentPage={currentPage} totalPages={10} onPageChange={onPageChange} />
       </div>
+      <FormModal
+        openModal={openModal}
+        onCloseModal={onCloseModal}
+      >
+        <DonationForm />
+      </FormModal>  
     </div>
   );
 }

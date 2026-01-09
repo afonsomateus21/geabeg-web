@@ -33,147 +33,147 @@ export const ScoutForm = () => {
             <TextInput 
               id="name" 
               type="text" 
-              placeholder="Nome..." 
+              placeholder="Ex: José Silva" 
               required 
             />
           </div>
           <div className="flex-1">
             <div className="mb-2 block">
-              <Label htmlFor="email1">Idade</Label>
+              <Label htmlFor="age">Idade</Label>
             </div>
-            <TextInput id="email1" type="number" placeholder="" required />
+            <TextInput id="age" type="number" placeholder="Ex: 12" required />
           </div>
           <div className="flex-2">
             <div className="mb-2 block">
-              <Label htmlFor="email1">Categoria</Label>
+              <Label htmlFor="category">Categoria</Label>
             </div>
-            <TextInput id="email1" type="email" placeholder="name@flowbite.com" required />
+            <TextInput id="category" type="text" placeholder="Ex: Escoteiro" required />
           </div>
         </div>
 
         <div className="flex w-full gap-2">
           <div className="flex-1">
             <div className="mb-2 block">
-              <Label htmlFor="name">CPF</Label>
+              <Label htmlFor="cpf">CPF</Label>
             </div>
             <TextInput 
-              id="name" 
+              id="cpf" 
               type="text" 
-              placeholder="Nome..." 
+              placeholder="Ex: 11111111111" 
               required 
             />
           </div>
           <div className="flex-1">
             <div className="mb-2 block">
-              <Label htmlFor="email1">Data de Nascimento</Label>
+              <Label htmlFor="birthdate">Data de Nascimento</Label>
             </div>
-            <TextInput id="email1" type="number" placeholder="" required />
+            <TextInput id="birthdate" type="text" placeholder="Ex: 01/01/2014" required />
           </div>
           <div className="flex-1">
             <div className="mb-2 block">
-              <Label htmlFor="email1">RG</Label>
+              <Label htmlFor="rg">RG</Label>
             </div>
-            <TextInput id="email1" type="email" placeholder="name@flowbite.com" required />
+            <TextInput id="rg" type="text" placeholder="Ex: 111111111" required />
           </div>
         </div>
 
         <div className="flex w-full gap-2">
           <div className="flex-1">
             <div className="mb-2 block">
-              <Label htmlFor="name">Endereço</Label>
+              <Label htmlFor="address">Endereço</Label>
             </div>
             <TextInput 
-              id="name" 
+              id="address" 
               type="text" 
-              placeholder="Nome..." 
+              placeholder="Ex: Av. Washington Soares, 2000" 
               required 
             />
-          </div>
-        </div>
-
-        <div className="flex w-full gap-2">
-          <div className="flex-4">
-            <div className="mb-2 block">
-              <Label htmlFor="name">Responsável 1</Label>
-            </div>
-            <TextInput 
-              id="name" 
-              type="text" 
-              placeholder="Nome..." 
-              required 
-            />
-          </div>
-          <div className="flex-1">
-            <div className="mb-2 block">
-              <Label htmlFor="email1">Contato</Label>
-            </div>
-            <TextInput id="email1" type="number" placeholder="" required />
           </div>
         </div>
 
         <div className="flex w-full gap-2">
           <div className="flex-4">
             <div className="mb-2 block">
-              <Label htmlFor="name">Responsável 2</Label>
+              <Label htmlFor="responsible1">Responsável 1</Label>
             </div>
             <TextInput 
-              id="name" 
+              id="responsible1" 
               type="text" 
-              placeholder="Nome..." 
+              placeholder="Ex: Paula Souza" 
               required 
             />
           </div>
           <div className="flex-1">
             <div className="mb-2 block">
-              <Label htmlFor="email1">Contato</Label>
+              <Label htmlFor="contact1">Contato</Label>
             </div>
-            <TextInput id="email1" type="number" placeholder="" required />
+            <TextInput id="contact1" type="text" placeholder="Ex: 85999999999" required />
+          </div>
+        </div>
+
+        <div className="flex w-full gap-2">
+          <div className="flex-4">
+            <div className="mb-2 block">
+              <Label htmlFor="responsible1">Responsável 2</Label>
+            </div>
+            <TextInput 
+              id="responsible1" 
+              type="text" 
+              placeholder="Ex: Rogério Souza" 
+              required 
+            />
+          </div>
+          <div className="flex-1">
+            <div className="mb-2 block">
+              <Label htmlFor="contact2">Contato</Label>
+            </div>
+            <TextInput id="contact2" type="text" placeholder="Ex: 85999999999" required />
           </div>
         </div>
 
         <div className="flex w-full gap-2">
           <div className="flex-1">
             <div className="mb-2 block">
-              <Label htmlFor="name">CEP</Label>
+              <Label htmlFor="cep">CEP</Label>
             </div>
             <TextInput 
-              id="name" 
+              id="cep" 
               type="text" 
-              placeholder="Nome..." 
+              placeholder="Ex: 60111-111" 
               required 
             />
           </div>
           <div className="flex-1">
             <div className="mb-2 block">
-              <Label htmlFor="email1">UF</Label>
+              <Label htmlFor="uf">UF</Label>
             </div>
-            <TextInput id="email1" type="number" placeholder="" required />
+            <TextInput id="ufc" type="text" placeholder="" required />
           </div>
           <div className="flex-1">
             <div className="mb-2 block">
-              <Label htmlFor="email1">Cidade</Label>
+              <Label htmlFor="city">Cidade</Label>
             </div>
-            <TextInput id="email1" type="email" placeholder="name@flowbite.com" required />
+            <TextInput id="city" type="text" placeholder="" required />
           </div>
         </div>
 
         <div className="flex w-full gap-2 items-end">
           <div className="flex-1">
             <div className="mb-2 block">
-              <Label htmlFor="name">Complemento</Label>
+              <Label htmlFor="complement">Complemento</Label>
             </div>
             <TextInput 
-              id="name" 
+              id="complement" 
               type="text" 
-              placeholder="Nome..." 
+              placeholder="Ex: Apto 505" 
               required 
             />
           </div>
           <div className="flex-1">
             <div className="mb-2 block">
-              <Label htmlFor="email1">Ponto de Referência</Label>
+              <Label htmlFor="landmark">Ponto de Referência</Label>
             </div>
-            <TextInput id="email1" type="number" placeholder="" required />
+            <TextInput id="landmark" type="text" placeholder="Ex: Casa rosa" required />
           </div>
         </div>
 

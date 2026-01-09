@@ -41,7 +41,30 @@ export const Scouts = () => {
         </div>
       </div>
 
-      <ScoutsTable />
+      <ScoutsTable 
+        scouts={[
+          {
+            name: "Afonso Mateus",
+            registration: "111111",
+            age: 10
+          },
+          {
+            name: "Gabriel Cavalcante",
+            registration: "111111",
+            age: 10
+          },
+          {
+            name: "Davi Lisboa",
+            registration: "111111",
+            age: 10
+          },
+          {
+            name: "Gabriel Farias",
+            registration: "111111",
+            age: 10
+          }
+        ]}
+      />
 
       <div className="flex overflow-x-auto sm:justify-center">
         <Pagination currentPage={currentPage} totalPages={10} onPageChange={onPageChange} />

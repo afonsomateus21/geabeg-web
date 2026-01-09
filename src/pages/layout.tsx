@@ -23,7 +23,7 @@ export const Layout = () => {
       </header>
 
       <main className="overflow-y-auto hide-scrollbar flex flex-col">
-        <div className="mt-[100px] rounded-tl-2xl bg-white shadow-xxs shadow-black flex-1 w-full overflow-y-auto">
+        <div className="mt-[100px] rounded-tl-2xl bg-white shadow-xxs shadow-black flex-1 w-full overflow-y-auto hide-scrollbar">
           <Outlet />
         </div>
       </main>

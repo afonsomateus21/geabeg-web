@@ -2,10 +2,11 @@ import { Button, HomeIcon, Sidebar, SidebarItem, SidebarItemGroup, SidebarItems 
 import { FaFolder } from "react-icons/fa";
 import { FiUsers } from "react-icons/fi";
 import { MdOutlineAttachMoney } from "react-icons/md";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 export const CustomSidebar = () => {
   const location = useLocation();
+  const navigate = useNavigate();
 
   return (
     <Sidebar className="relative !bg-white">
@@ -16,6 +17,7 @@ export const CustomSidebar = () => {
               !bg-black
               [&:hover]:!bg-gray-800
             "
+            onClick={() => navigate("/")}
           >
             <HomeIcon className="h-6 w-6" />
           </Button>

@@ -3,8 +3,11 @@ import { useState } from "react";
 import { HiPencil, HiTrash } from "react-icons/hi";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { MdOutlineArrowDropDown } from "react-icons/md";
+import type { ProductCardProps } from "../types/product";
+import ImagePlaceholder from "../assets/image-placeholder.png";
+import { convertToReal } from "../utils/helpers";
 
-export const ProductCard = () => {
+export const ProductCard = ({ title, price, imageUrl }: ProductCardProps) => {
   const [expanded, setExpanded] = useState(false);
 
   return (
@@ -20,14 +23,18 @@ export const ProductCard = () => {
             justify-center
             ${expanded ? 'rounded-t-xl rounded-r-xl' : 'rounded-xl'}
           `}>
-          imagem
+          {
+            imageUrl 
+            ? <img src={imageUrl} className="w-full h-full" />
+            : <img src={ImagePlaceholder} className="w-full h-full" />
+          }
         </div>
 
         <div className="flex-1 flex flex-col">
           <div className="flex justify-between p-4">
             <div>
-              <h3 className="text-lg font-semibold">Produto 1</h3>
-              <span className="text-sm">R$23,50</span>
+              <h3 className="text-lg font-semibold">{title}</h3>
+              <span className="text-sm">{convertToReal(price)}</span>
             </div>
 
             <div className="flex gap-2">
