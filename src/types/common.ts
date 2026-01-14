@@ -58,3 +58,9 @@ export interface ConfirmationViewProps {
 }
 
 export type ActionModalButtonOptionsId = typeof actionModalButtonOptions[number]["id"];
+
+export interface DatePickerInputProps {
+  title: string;
+  value: Date | null;
+  onChange: (date: Date | null) => void;
+}

@@ -22,11 +22,11 @@ export const CustomSidebar = () => {
             <HomeIcon className="h-6 w-6" />
           </Button>
           <SidebarItem 
-            onClick={() => navigate("/escoteiros")}
+            onClick={() => navigate("/membros")}
             icon={FiUsers}
-            active={location.pathname === "/escoteiros"}
+            active={location.pathname === "/membros"}
           >
-            Escoteiros
+            Membros
           </SidebarItem>
           <SidebarItem 
             onClick={() => navigate("/produtos")}

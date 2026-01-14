@@ -9,8 +9,9 @@ import type { ProductPageFilterId } from "../types/common";
 import { productPageFilters } from "../utils/constants";
 import { DonationCard } from "../components/DonationCard";
 import { IoMdAdd } from "react-icons/io";
-import { FormModal } from "../components/FormModal";
-import { DonationForm } from "../components/DonationForm";
+import { FormModal } from "../components/forms/FormModal";
+import { DonationForm } from "../components/forms/DonationForm";
+import { ProductForm } from "../components/forms/ProductForm";
 
 export const Products = () => {
   const [currentPage, setCurrentPage] = useState(1);
@@ -102,8 +103,36 @@ export const Products = () => {
       <FormModal
         openModal={openModal}
         onCloseModal={onCloseModal}
+        title={selectedFilter === "products" ? "Novo produto" : "Nova doação"}
       >
-        <DonationForm />
+        {
+          selectedFilter === "products" 
+          ? <ProductForm 
+              scouts={[
+                {
+                  name: "Afonso Mateus",
+                  registration: "111111",
+                  age: 10
+                },
+                {
+                  name: "Gabriel Cavalcante",
+                  registration: "111111",
+                  age: 10
+                },
+                {
+                  name: "Davi Lisboa",
+                  registration: "111111",
+                  age: 10
+                },
+                {
+                  name: "Gabriel Farias",
+                  registration: "111111",
+                  age: 10
+                }
+              ]}
+            />
+          : <DonationForm />
+        }
       </FormModal>  
     </div>
   );

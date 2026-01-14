@@ -44,3 +44,32 @@ export interface Scout {
   responsible2?: Responsible;
   address?: Address;
 }
+
+export interface ScoutFormInputs {
+  observations: string;
+  name: string;
+  age: number;
+  category: ScoutCategoryType;
+  cpf: string;
+  birthDate: Date;
+  rg: string;
+  responsible1: Responsible;
+  responsible2: Responsible;
+  address: Address;
+}
+
+export interface ScoutFormProps {
+  scout?: Scout;
+}
+
+export interface ScoutBasicEditFormInputs {
+  name: string;
+  registration: string;
+  age: number;
+}
+
+export interface ScoutActionsMenuProps {
+  onOpenPayment: () => void;
+  onDeleteMember: () => void;
+  onEditMember: () => void;
+}

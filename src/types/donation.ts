@@ -3,3 +3,10 @@ export interface DonationCardProps {
   price: number;
   donor: string;
 }
+
+export interface DonationFormInputs {
+  name: string;
+  price: number;
+  donatorName: string;
+  donationDate: Date;
+}

@@ -19,7 +19,7 @@ export const Scouts = () => {
         <Button 
           size="sm"
           pill
-          onClick={() => navigate("/escoteiros/registrar")}
+          onClick={() => navigate("/membros/registrar")}
         >
           <IoMdAdd className="mr-2 h-5 w-5" />
           Adicionar
@@ -50,17 +50,17 @@ export const Scouts = () => {
           },
           {
             name: "Gabriel Cavalcante",
-            registration: "111111",
+            registration: "222222",
             age: 10
           },
           {
             name: "Davi Lisboa",
-            registration: "111111",
+            registration: "333333",
             age: 10
           },
           {
             name: "Gabriel Farias",
-            registration: "111111",
+            registration: "444444",
             age: 10
           }
         ]}

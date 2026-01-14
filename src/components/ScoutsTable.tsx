@@ -6,11 +6,22 @@ import { MdOutlineArrowDropDown, MdOutlineArrowDropUp } from "react-icons/md";
 import type { Scout, ScoutsTableProps } from "../types/scout";
 import { BsThreeDotsVertical } from "react-icons/bs";
 import { ActionModal } from "./ActionModal";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { ScoutActionsMenu } from "./ScoutActionsMenu";
+import { useClickOutside } from "../hooks/useClickOutside";
 
 export function ScoutsTable({ scouts }: ScoutsTableProps) {
   const [openModal, setOpenModal] = useState(false);
   const [selectedScout, setSelectedScout] = useState<Scout | null>(null);
+  const [openMenu, setOpenMenu] = useState<string | null>(null);
+  const menuRef = useRef<HTMLDivElement | null>(null);
+  useClickOutside(menuRef, () => setOpenMenu(null));
+
+  const toggleMenu = (registration: string) => {
+    setOpenMenu((prev) =>
+      prev === registration ? null : registration
+    );
+  };
 
   const handleOpenModal = (scout: Scout) => {
     setOpenModal(true);
@@ -51,27 +62,38 @@ export function ScoutsTable({ scouts }: ScoutsTableProps) {
         <TableBody className="divide-y">
           {
             scouts.map((scout) => (
-              <>
-                <TableRow 
-                  key={scout.registration}
-                  className="bg-white"
-                >
-                  <TableCell className="whitespace-nowrap font-medium text-gray-900">
-                    {scout.name}
-                  </TableCell>
-                  <TableCell className="text-gray-900">{scout.registration}</TableCell>
-                  <TableCell className="text-gray-900">{scout.age} anos</TableCell>
-                  <TableCell>
-                    <button className="cursor-pointer">
-                      <BsThreeDotsVertical 
-                        onClick={() => handleOpenModal(scout)}
-                        className="h-5 w-5" 
-                        color="black"
+              <TableRow 
+                key={scout.registration}
+                className="bg-white"
+              >
+                <TableCell className="whitespace-nowrap font-medium text-gray-900">
+                  {scout.name}
+                </TableCell>
+                <TableCell className="text-gray-900">{scout.registration}</TableCell>
+                <TableCell className="text-gray-900">{scout.age} anos</TableCell>
+                <TableCell className="relative">
+                  <button className="cursor-pointer">
+                    <BsThreeDotsVertical 
+                      onClick={() => toggleMenu(scout.registration)}
+                      className="h-5 w-5" 
+                      color="black"
+                    />
+                  </button>
+
+                  {openMenu === scout.registration && (
+                    <div ref={menuRef}>
+                      <ScoutActionsMenu 
+                        onOpenPayment={() => {
+                          handleOpenModal(scout);
+                          setOpenMenu(null);
+                        }}
+                        onEditMember={() => console.log("Editar", scout)}
+                        onDeleteMember={() => console.log("Excluir", scout)}
                       />
-                    </button>
-                  </TableCell>
-                </TableRow>
-              </>
+                    </div>
+                  )}
+                </TableCell>
+              </TableRow>
             ))
           }
         </TableBody>
