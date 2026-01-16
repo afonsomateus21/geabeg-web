@@ -171,4 +171,9 @@ export const mountPayerPayload = (scouts: Scout[]) => {
   }));
 }
 
+export const isoToBrDate = (date: string) => {
+  const [year, month, day] = date.split("-");
+  return `${day}/${month}/${year}`;
+}
+
 

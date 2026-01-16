@@ -40,6 +40,7 @@ export type ActionModalView =
 
 export interface ActionModalProps extends GeneralModalProps {
   scout: Scout;
+  productId: string;
 }
 
 export interface HomeViewProps {

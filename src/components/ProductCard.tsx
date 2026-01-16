@@ -15,6 +15,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
   const [selectedPayer, setSelectedPayer] = useState<Scout | null>(null);
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement>(null);
+  const [selectedProduct, setSelectedProduct] = useState<string | null>(null);
 
   const getStatusLabel = (status: string) => {
     return status === "paid" ? "Pago" : "Pendente";
@@ -172,6 +173,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                             onClick={(e) => {
                               e.stopPropagation();
                               handleOpenModal(payer);
+                              setSelectedProduct(product.product_id!)
                             }}
                             className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm font-medium text-gray-700"
                           >
@@ -210,10 +212,10 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           openModal={openModal}
           onCloseModal={() => setOpenModal(false)}
           scout={selectedPayer}
-          productId={product.product_id}
+          productId={selectedProduct!}
         />
       )}
     </>
-  );a
+  );
 };
 

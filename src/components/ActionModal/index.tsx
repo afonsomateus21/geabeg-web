@@ -4,13 +4,26 @@ import { useState } from "react";
 import { HomeView } from "./HomeView";
 import { PaymentView } from "./PaymentView";
 import { ConfirmationView } from "./ConfirmationView";
+import { useStudents } from "../../hooks/useStudents";
+import { useProducts } from "../../hooks/useProducts";
 
-export function ActionModal({ openModal, onCloseModal, scout }: ActionModalProps) {
+export function ActionModal({ openModal, onCloseModal, scout, productId }: ActionModalProps) {
   const [view, setView] = useState<ActionModalView>("HOME");
+  const { onConfirmPayment } = useStudents();
+  const { fetchProducts } = useProducts();
 
   const handleCloseModal = () => {
     setView("HOME");
     onCloseModal();
+  }
+
+  const handlePayment = async () => {
+    try {
+      await onConfirmPayment(productId, scout.registration, "paid");
+      await fetchProducts("product");
+    } catch(error) {
+      console.log(error);
+    }
   }
 
   return (
@@ -35,7 +48,10 @@ export function ActionModal({ openModal, onCloseModal, scout }: ActionModalProps
           view === "PAYMENT" && (
             <PaymentView 
               title="Selecione a forma de pagamento"
-              onConfirmation={() => setView("CONFIRMATION_MESSAGE")}
+              onConfirmation={() => {
+                handlePayment();
+                setView("CONFIRMATION_MESSAGE")
+              }}
             />
           )
         }

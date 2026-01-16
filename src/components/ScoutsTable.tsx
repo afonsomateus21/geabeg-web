@@ -9,7 +9,7 @@ import { ActionModal } from "./ActionModal";
 import { useRef, useState } from "react";
 import { ScoutActionsMenu } from "./ScoutActionsMenu";
 import { useClickOutside } from "../hooks/useClickOutside";
-import { paymentCategories } from "../utils/constants";
+import { useNavigate } from "react-router";
 
 export function ScoutsTable({ scouts }: ScoutsTableProps) {
   const [openModal, setOpenModal] = useState(false);
@@ -17,6 +17,7 @@ export function ScoutsTable({ scouts }: ScoutsTableProps) {
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
   useClickOutside(menuRef, () => setOpenMenu(null));
+  const navigate = useNavigate();
 
   const toggleMenu = (registration: string) => {
     setOpenMenu((prev) =>
@@ -51,7 +52,7 @@ export function ScoutsTable({ scouts }: ScoutsTableProps) {
             </HeaderIconButton>
           </TableHeadCell>
           <TableHeadCell>
-            <HeaderIconButton title="Pagamento">
+            <HeaderIconButton title="Categoria">
               <MdOutlineArrowDropUp className="h-5 w-5" />
               <MdOutlineArrowDropDown className="h-5 w-5" />
             </HeaderIconButton>
@@ -72,10 +73,7 @@ export function ScoutsTable({ scouts }: ScoutsTableProps) {
                 </TableCell>
                 <TableCell className="text-gray-900">{scout.registration}</TableCell>
                 <TableCell className="text-gray-900">
-                  {scout.product_list?.some(p => p.status !== "paid")
-                    ? paymentCategories.find(c => c.value === "pending")?.label
-                    : paymentCategories.find(c => c.value === "paid")?.label
-                  }
+                  {scout.category}
                 </TableCell>
                 <TableCell className="relative">
                   <button className="cursor-pointer">
@@ -93,7 +91,13 @@ export function ScoutsTable({ scouts }: ScoutsTableProps) {
                           handleOpenModal(scout);
                           setOpenMenu(null);
                         }}
-                        onEditMember={() => console.log("Editar", scout)}
+                        onEditMember={() => {
+                          navigate("/membros/editar", {
+                            state: {
+                              scout
+                            }
+                          })
+                        }}
                         onDeleteMember={() => console.log("Excluir", scout)}
                       />
                     </div>
@@ -110,6 +114,7 @@ export function ScoutsTable({ scouts }: ScoutsTableProps) {
             openModal={openModal}
             onCloseModal={onCloseModal}
             scout={selectedScout!}
+            productId=""
           />
         )
       }

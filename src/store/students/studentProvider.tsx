@@ -61,7 +61,7 @@ export const StudentProvider = ({ children }: { children: ReactNode }) => {
   const onConfirmPayment = async (product_id: string, student_id: string, status: string) => {
     try {
       setLoading(true);
-      await api.post(`/students/${student_id}/payment/status`,
+      await api.patch(`/students/${student_id}/payments/status`,
         {
           status
         },
