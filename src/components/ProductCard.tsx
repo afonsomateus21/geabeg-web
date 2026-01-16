@@ -1,5 +1,5 @@
 import { Button } from "flowbite-react";
-import {useMemo, useState } from "react";
+import { useState } from "react";
 import { HiPencil, HiTrash } from "react-icons/hi";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { MdOutlineArrowDropDown } from "react-icons/md";
@@ -7,21 +7,25 @@ import type { ProductCardProps } from "../types/product";
 import ImagePlaceholder from "../assets/image-placeholder.png";
 import { convertToReal } from "../utils/helpers";
 import { useStudents } from "../hooks/useStudents";
-import type { Scout } from "../types/scout";
 
 export const ProductCard = ({ product }: ProductCardProps) => {
   const [expanded, setExpanded] = useState(false);
-  const { students } = useStudents();
+  const { onConfirmPayment } = useStudents();
 
-  const selectedStudents: Scout[] = useMemo(() => {
-    if (!students || !product?.payers_list) return [];
+  const getStatusLabel = (status: string) => {
+    return status === "paid" ? "Pago" : "Pendente";
+  };
 
-    return students.filter(scout =>
-      product.payers_list?.some(
-        payer => payer.student_id === scout.registration
-      )
-    );
-  }, [students, product]);
+  const getStatusColor = (status: string) => {
+    return status === "paid" ? "text-green-600" : "text-yellow-600";
+  };
+
+  const handleConfirmPayment = async (studentId: string, currentStatus: string) => {
+    if (!product.product_id) return;
+    
+    const newStatus = currentStatus === "paid" ? "pending" : "paid";
+    await onConfirmPayment(product.product_id, studentId, newStatus);
+  };
 
   return (
     <div className="w-full bg-gray-200 rounded-xl overflow-hidden">
@@ -83,13 +87,13 @@ export const ProductCard = ({ product }: ProductCardProps) => {
               ${expanded ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"}
             `}
           >
-            {selectedStudents.map((selectedStudent) => (
+            {product.payers_list?.map((payer) => (
               <div
-                key={selectedStudent.registration}
+                key={payer.student_id}
                 className="
                   grid
-                  grid-cols-[2fr_1fr_1fr_40px]
-                  items-start
+                  grid-cols-[2fr_1fr_40px]
+                  items-center
                   px-5
                   py-2
                   border-b
@@ -97,20 +101,26 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                 "
               >
                 <span className="break-words">
-                  {selectedStudent?.name}
+                  {payer.name}
                 </span>
 
-                <span>
-                  {selectedStudent?.registration}
+                <span className={`font-semibold ${getStatusColor(payer.status)}`}>
+                  {getStatusLabel(payer.status)}
                 </span>
 
-                <span>
-                  {selectedStudent?.category}
-                </span>
-
-                <span className="text-right cursor-pointer">
-                  ⋮
-                </span>
+                <div className="text-right relative group">
+                  <button className="cursor-pointer hover:bg-gray-400 rounded p-1">
+                    ⋮
+                  </button>
+                  <div className="hidden group-hover:block absolute right-0 mt-1 bg-white shadow-lg rounded-lg py-1 z-10 min-w-[200px]">
+                    <button
+                      onClick={() => handleConfirmPayment(payer.student_id, payer.status)}
+                      className="w-full text-left px-4 py-2 hover:bg-gray-100 text-sm"
+                    >
+                      {payer.status === "paid" ? "Marcar como Pendente" : "Confirmar Pagamento"}
+                    </button>
+                  </div>
+                </div>
               </div>
             ))}
           </div>

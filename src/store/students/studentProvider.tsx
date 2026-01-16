@@ -71,6 +71,7 @@ export const StudentProvider = ({ children }: { children: ReactNode }) => {
           }
         }
       );
+      await fetchStudents();
     } catch (error) {
       console.error(error);
     } finally {
