@@ -1,4 +1,4 @@
-import { Button, Pagination } from "flowbite-react";
+import { Button, Spinner } from "flowbite-react";
 import { ProductCard } from "../components/ProductCard";
 import { useState } from "react";
 import { MonthNavigator } from "../components/MonthNavigator";
@@ -12,15 +12,21 @@ import { IoMdAdd } from "react-icons/io";
 import { FormModal } from "../components/forms/FormModal";
 import { DonationForm } from "../components/forms/DonationForm";
 import { ProductForm } from "../components/forms/ProductForm";
+import { useProducts } from "../hooks/useProducts";
+import { useStudents } from "../hooks/useStudents";
 
 export const Products = () => {
-  const [currentPage, setCurrentPage] = useState(1);
-  const [selectedFilter, setSelectedFilter] = useState<ProductPageFilterId>("products");
+  const [selectedFilter, setSelectedFilter] = useState<ProductPageFilterId>("product");
   const [openModal, setOpenModal] = useState(false);
-
-  const onPageChange = (page: number) => setCurrentPage(page);
+  const { loading, products, fetchProducts } = useProducts();
+  const { students } = useStudents();
 
   const onCloseModal = () => setOpenModal(false);
+
+  const handleChooseFilter = (id: "product" | "donation") => {
+    setSelectedFilter(id);
+    fetchProducts(id);
+  }
 
   return (
     <div className="w-full p-5 flex flex-col">
@@ -38,7 +44,8 @@ export const Products = () => {
                     ${selectedFilter === filter.id && 'bg-gray-400'}  
                   `}
                   outline={selectedFilter !== filter.id}
-                  onClick={() => setSelectedFilter(filter.id)}
+                  // onClick={() => setSelectedFilter(filter.id)}
+                  onClick={() => handleChooseFilter(filter.id)}
                   color="gray"
                 >
                   {selectedFilter == filter.id && <HiCheck className="mr-2 h-5 w-5" />}
@@ -75,61 +82,42 @@ export const Products = () => {
         </Button>
       </div>
       {
-        selectedFilter === "products" 
-        ? [1,2,3,4,5,6,7,8].map((_, index) => (
-          <div className="mb-2">
-            <ProductCard 
-              key={index}
-              title="Produto 1"
-              price={23.9}
-            />
+        loading 
+        ?
+          <div className="w-full h-full flex items-start justify-center">
+            <Spinner aria-label="Large spinner example" size="xl" />
           </div>
-        ))
-        : [1,2,3,4,5,6,7,8].map((_, index) => (
-          <div className="mb-2">
-            <DonationCard 
-              key={index}
-              title="Produto 1"
-              price={23.9}
-              donor="Anselmo Luiz"
-            />
-          </div>
-        ))
+        :
+        (
+          selectedFilter === "product" 
+          ? products?.map((product) => (
+            <div className="mb-2">
+              <ProductCard 
+                key={product.id}
+                product={product}
+              />
+            </div>
+          ))
+          : products?.map((product) => (
+            <div className="mb-2">
+              <DonationCard 
+                key={product.id}
+                product={product}
+              />
+            </div>
+          ))
+        )
       }
 
-      <div className="flex overflow-x-auto sm:justify-center">
-        <Pagination currentPage={currentPage} totalPages={10} onPageChange={onPageChange} />
-      </div>
       <FormModal
         openModal={openModal}
         onCloseModal={onCloseModal}
-        title={selectedFilter === "products" ? "Novo produto" : "Nova doação"}
+        title={selectedFilter === "product" ? "Novo produto" : "Nova doação"}
       >
         {
-          selectedFilter === "products" 
+          selectedFilter === "product" 
           ? <ProductForm 
-              scouts={[
-                {
-                  name: "Afonso Mateus",
-                  registration: "111111",
-                  age: 10
-                },
-                {
-                  name: "Gabriel Cavalcante",
-                  registration: "111111",
-                  age: 10
-                },
-                {
-                  name: "Davi Lisboa",
-                  registration: "111111",
-                  age: 10
-                },
-                {
-                  name: "Gabriel Farias",
-                  registration: "111111",
-                  age: 10
-                }
-              ]}
+              scouts={students}
             />
           : <DonationForm />
         }

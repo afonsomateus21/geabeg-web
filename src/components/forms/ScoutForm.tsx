@@ -1,12 +1,14 @@
-import { Button, Label, Select, Textarea, TextInput } from "flowbite-react";
+import { Button, Label, Select, Spinner, Textarea, TextInput } from "flowbite-react";
 import { useForm, useWatch, type SubmitHandler } from "react-hook-form";
 import { HiCheck } from "react-icons/hi";
 import type { ScoutFormInputs } from "../../types/scout";
 import { scoutCategories, ufs } from "../../utils/constants";
 import { useEffect } from "react";
 import { viaCepAPI } from "../../services/api";
-import { maskCEP, maskCPF, maskDate, maskPhone } from "../../utils/helpers";
+import { maskCEP, maskCPF, maskDate, maskPhone, mountStudentPayload } from "../../utils/helpers";
 import { InputImage } from "../inputs/InputImage";
+import { useStudents } from "../../hooks/useStudents";
+import { toast } from "react-toastify";
 
 export const ScoutForm = () => {
   const {
@@ -21,6 +23,8 @@ export const ScoutForm = () => {
     name: "address.cep",
   });
 
+  const { loading, createStudent } = useStudents();
+ 
   useEffect(() => {
     if (!cep) return;
 
@@ -46,9 +50,19 @@ export const ScoutForm = () => {
 }, [cep, setValue]);
 
 
-  const onSubmit: SubmitHandler<ScoutFormInputs> = (data) => {
+  const onSubmit: SubmitHandler<ScoutFormInputs> = async (data) => {
     console.log("entrou")
     console.log(data)
+    try {
+      const payload = mountStudentPayload(data);
+
+      await createStudent(payload);
+
+      return toast.success("Estudante criado com sucesso!");
+    } catch (error) {
+      console.log(error);
+      return toast.error("Erro ao criar estudante!");
+    }
   }
 
   return (
@@ -169,6 +183,25 @@ export const ScoutForm = () => {
               placeholder="Ex: 111111111" 
               required
               {...register("rg")}
+            />
+          </div>
+        </div>
+
+        <div>
+          <div className="flex-1">
+            <div className="mb-2 block">
+              <Label htmlFor="contact1">Telefone</Label>
+            </div>
+            <TextInput 
+              id="contact1" 
+              type="text" 
+              placeholder="Ex: (85) 99999-9999" 
+              required
+              {...register("phoneNumber", {
+                onChange: (e) => {
+                  e.target.value = maskPhone(e.target.value);
+                },
+              })}
             />
           </div>
         </div>
@@ -338,8 +371,18 @@ export const ScoutForm = () => {
           pill
           type="submit"
         >
-          <HiCheck className="mr-2 h-5 w-5" />
-          Salvar
+          {
+            loading ?
+            <>
+              <Spinner aria-label="Alternate spinner button example" size="md" />
+              <span className="pl-3">Salvando...</span>
+            </>
+            :
+            <>
+              <HiCheck className="mr-2 h-5 w-5" />
+              Salvar
+            </>
+          }          
         </Button>
       </div>
     </form>

@@ -1,14 +1,27 @@
 import { Button } from "flowbite-react";
-import { useState } from "react";
+import {useMemo, useState } from "react";
 import { HiPencil, HiTrash } from "react-icons/hi";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { MdOutlineArrowDropDown } from "react-icons/md";
 import type { ProductCardProps } from "../types/product";
 import ImagePlaceholder from "../assets/image-placeholder.png";
 import { convertToReal } from "../utils/helpers";
+import { useStudents } from "../hooks/useStudents";
+import type { Scout } from "../types/scout";
 
-export const ProductCard = ({ title, price, imageUrl }: ProductCardProps) => {
+export const ProductCard = ({ product }: ProductCardProps) => {
   const [expanded, setExpanded] = useState(false);
+  const { students } = useStudents();
+
+  const selectedStudents: Scout[] = useMemo(() => {
+    if (!students || !product?.payers_list) return [];
+
+    return students.filter(scout =>
+      product.payers_list?.some(
+        payer => payer.student_id === scout.registration
+      )
+    );
+  }, [students, product]);
 
   return (
     <div className="w-full bg-gray-200 rounded-xl overflow-hidden">
@@ -23,18 +36,14 @@ export const ProductCard = ({ title, price, imageUrl }: ProductCardProps) => {
             justify-center
             ${expanded ? 'rounded-t-xl rounded-r-xl' : 'rounded-xl'}
           `}>
-          {
-            imageUrl 
-            ? <img src={imageUrl} className="w-full h-full" />
-            : <img src={ImagePlaceholder} className="w-full h-full" />
-          }
+          <img src={ImagePlaceholder} className="w-full h-full" />
         </div>
 
         <div className="flex-1 flex flex-col">
           <div className="flex justify-between p-4">
             <div>
-              <h3 className="text-lg font-semibold">{title}</h3>
-              <span className="text-sm">{convertToReal(price)}</span>
+              <h3 className="text-lg font-semibold">{product.name}</h3>
+              <span className="text-sm">{convertToReal(product.price)}</span>
             </div>
 
             <div className="flex gap-2">
@@ -74,15 +83,34 @@ export const ProductCard = ({ title, price, imageUrl }: ProductCardProps) => {
               ${expanded ? "max-h-[600px] opacity-100" : "max-h-0 opacity-0"}
             `}
           >
-            {Array.from({ length: 8 }).map((_, i) => (
+            {selectedStudents.map((selectedStudent) => (
               <div
-                key={i}
-                className="flex justify-between px-5 py-2 border-b text-sm"
+                key={selectedStudent.registration}
+                className="
+                  grid
+                  grid-cols-[2fr_1fr_1fr_40px]
+                  items-start
+                  px-5
+                  py-2
+                  border-b
+                  text-sm
+                "
               >
-                <span>Augustinho Gomes Junior</span>
-                <span>553659</span>
-                <span>8 anos</span>
-                <span>⋮</span>
+                <span className="break-words">
+                  {selectedStudent?.name}
+                </span>
+
+                <span>
+                  {selectedStudent?.registration}
+                </span>
+
+                <span>
+                  {selectedStudent?.category}
+                </span>
+
+                <span className="text-right cursor-pointer">
+                  ⋮
+                </span>
               </div>
             ))}
           </div>

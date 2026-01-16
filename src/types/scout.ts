@@ -1,5 +1,7 @@
+import type { StatusType } from "./product";
+
 export interface ScoutsTableProps {
-  scouts: Scout[];
+  scouts: Scout[] | null;
 }
 
 export interface ScoutInfoForTable {
@@ -9,10 +11,10 @@ export interface ScoutInfoForTable {
 }
 
 export const ScoutCategoryType = {
-  LOBINHO: "LOBINHO",
-  ESCOTEIRO: "ESCOTEIRO",
-  SENIOR: "SENIOR",
-  PIONEIRO: "PIONEIRO"
+  LOBINHO: "lobinho",
+  ESCOTEIRO: "escoteiro",
+  SENIOR: "senior",
+  PIONEIRO: "pioneiro"
 } as const;
 
 export type ScoutCategoryType = typeof ScoutCategoryType[keyof typeof ScoutCategoryType];
@@ -43,6 +45,7 @@ export interface Scout {
   responsible1?: Responsible;
   responsible2?: Responsible;
   address?: Address;
+  product_list?: ProductList[];
 }
 
 export interface ScoutFormInputs {
@@ -53,13 +56,10 @@ export interface ScoutFormInputs {
   cpf: string;
   birthDate: Date;
   rg: string;
+  phoneNumber: string;
   responsible1: Responsible;
   responsible2: Responsible;
   address: Address;
-}
-
-export interface ScoutFormProps {
-  scout?: Scout;
 }
 
 export interface ScoutBasicEditFormInputs {
@@ -72,4 +72,57 @@ export interface ScoutActionsMenuProps {
   onOpenPayment: () => void;
   onDeleteMember: () => void;
   onEditMember: () => void;
+}
+
+export interface Parent {
+  parent_name: string;
+  contact: string;
+}
+
+export interface ProductList {
+  name: string;
+  price: number;
+  status: StatusType;
+  product_id: string;
+}
+
+export interface StudentPayload {
+  id?: number;
+  student_id?: string;
+
+  name: string;
+  cpf?: string;
+  rg?: string;
+
+  birthDate?: string;
+  age: number;
+
+  ramo: string;
+
+  phoneNumber?: string;
+
+  address?: {
+    street: string;
+    cep: string;
+    city: string;
+    uf: string;
+    complement?: string;
+    reference?: string;
+  };
+
+  responsible1?: Responsible;
+  responsible2?: Responsible;
+
+  product_list?: ProductList[];
+
+  createdAt?: string;
+  updatedAt?: string;
+}
+
+export interface ScoutBasicEditFormProps {
+  scout: Scout;
+}
+
+export interface ScoutFormProps {
+  scoutId?: string;
 }

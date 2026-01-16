@@ -1,4 +1,4 @@
-import { Button, Checkbox, Label, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, TextInput } from "flowbite-react";
+import { Button, Checkbox, Label, Spinner, Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow, TextInput } from "flowbite-react";
 import { DatePickerContainer } from "../DatePickerContainer";
 import "react-datepicker/dist/react-datepicker.css";
 import { DatePickerInput } from "../inputs/DatePickerInput";
@@ -8,15 +8,36 @@ import { MdOutlineArrowDropDown, MdOutlineArrowDropUp } from "react-icons/md";
 import type { ProductFormInputs, ProductFormProps } from "../../types/product";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import { HiCheck } from "react-icons/hi";
+import { useProducts } from "../../hooks/useProducts";
+import { mountPayerPayload, mountProductPayload } from "../../utils/helpers";
+import { toast } from "react-toastify";
 
 export const ProductForm = ({ scouts }: ProductFormProps) => {
   const {
     register,
     handleSubmit,
     control,
-  } = useForm<ProductFormInputs>()
+  } = useForm<ProductFormInputs>();
+  const { loading, createProduct } = useProducts();
 
-  const onSubmit: SubmitHandler<ProductFormInputs> = (data) => console.log(data)
+  const onSubmit: SubmitHandler<ProductFormInputs> = async (data) => {
+    try {
+      const productPayload = mountProductPayload(data);
+
+      const scoutsSelected = data.scoutRegistration;
+
+      const scoutsPayload = scouts?.filter(scout =>
+        scoutsSelected.includes(scout.registration)
+      );
+
+
+      await createProduct(productPayload, mountPayerPayload(scoutsPayload!));
+
+      return toast.success("Produto criado com sucesso!")
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <form 
@@ -87,7 +108,7 @@ export const ProductForm = ({ scouts }: ProductFormProps) => {
               rules={{ required: true }}
               render={({ field }) => (
                 <DatePickerInput
-                  title="Data inicial"
+                  title="Data final"
                   value={field.value}
                   onChange={field.onChange}
                 />
@@ -126,7 +147,7 @@ export const ProductForm = ({ scouts }: ProductFormProps) => {
         </TableHead>
         <TableBody className="divide-y">
           {
-            scouts.map((scout) => (
+            scouts?.map((scout) => (
               <>
                 <TableRow 
                   key={scout.registration}
@@ -156,8 +177,18 @@ export const ProductForm = ({ scouts }: ProductFormProps) => {
           pill
           type="submit"
         >
-          <HiCheck className="mr-2 h-5 w-5" />
-          Salvar
+          {
+            loading ?
+            <>
+              <Spinner aria-label="Alternate spinner button example" size="md" />
+              <span className="pl-3">Salvando...</span>
+            </>
+            :
+            <>
+              <HiCheck className="mr-2 h-5 w-5" />
+              Salvar
+            </>
+          }
         </Button>
       </div>
     </form>

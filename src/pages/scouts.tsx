@@ -1,17 +1,16 @@
-import { Button, Pagination } from "flowbite-react";
+import { Button, Spinner } from "flowbite-react";
 import { ScoutsTable } from "../components/ScoutsTable";
 import { useState } from "react";
 import { IoMdAdd } from "react-icons/io";
 import type { FilterId } from "../types/common";
 import { filters } from "../utils/constants";
 import { useNavigate } from "react-router";
+import { useStudents } from "../hooks/useStudents";
 
 export const Scouts = () => {
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedFilter, setSelectedFilter] = useState<FilterId | null>(null);
   const navigate = useNavigate();
-
-  const onPageChange = (page: number) => setCurrentPage(page);
+  const { students, loading } = useStudents();
 
   return (
     <div className="w-full h-full">
@@ -41,34 +40,23 @@ export const Scouts = () => {
         </div>
       </div>
 
-      <ScoutsTable 
-        scouts={[
-          {
-            name: "Afonso Mateus",
-            registration: "111111",
-            age: 10
-          },
-          {
-            name: "Gabriel Cavalcante",
-            registration: "222222",
-            age: 10
-          },
-          {
-            name: "Davi Lisboa",
-            registration: "333333",
-            age: 10
-          },
-          {
-            name: "Gabriel Farias",
-            registration: "444444",
-            age: 10
-          }
-        ]}
-      />
-
-      <div className="flex overflow-x-auto sm:justify-center">
-        <Pagination currentPage={currentPage} totalPages={10} onPageChange={onPageChange} />
-      </div>
+      {
+        loading ? 
+          <div className="w-full h-full flex items-start justify-center">
+            <Spinner aria-label="Large spinner example" size="xl" />
+          </div>
+        : 
+        (
+          students?.length === 0 ?
+          <div className="w-full h-full flex items-start justify-center">
+            <span>Não há dados</span>
+          </div>
+          :
+          <ScoutsTable 
+            scouts={students}
+          /> 
+        )         
+      }
     </div>
   );
 }

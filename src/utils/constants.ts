@@ -6,8 +6,8 @@ export const filters = [
 ] as const;
 
 export const productPageFilters = [
-  { id: "products", label: "Produtos" },
-  { id: "donations", label: "Doações" }
+  { id: "product", label: "Produtos" },
+  { id: "donation", label: "Doações" }
 ] as const;
 
 export const actionModalButtonOptions = [
@@ -16,10 +16,17 @@ export const actionModalButtonOptions = [
 ] as const;
 
 export const scoutCategories  = [
-  { value: "LOBINHO", label: "Lobinho" },
-  { value: "ESCOTEIRO", label: "Escoteiro" },
-  { value: "SENIOR", label: "Senior" },
-  { value: "PIONEIRO", label: "Pioneiro" },
+  { value: "lobinho", label: "Lobinho" },
+  { value: "escoteiro", label: "Escoteiro" },
+  { value: "senior", label: "Senior" },
+  { value: "pioneiro", label: "Pioneiro" },
+]
+
+export const paymentCategories  = [
+  { value: "pending", label: "Pendente" },
+  { value: "paid", label: "Pago" },
+  { value: "not_paid", label: "Não pago" },
+  { value: "isento", label: "Isento" },
 ]
 
 export const ufs = [

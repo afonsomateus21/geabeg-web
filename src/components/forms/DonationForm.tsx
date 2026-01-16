@@ -1,18 +1,32 @@
-import { Button, Label, TextInput } from "flowbite-react";
+import { Button, Label, Spinner, TextInput } from "flowbite-react";
 import { DatePickerContainer } from "../DatePickerContainer";
 import { DatePickerInput } from "../inputs/DatePickerInput";
 import { Controller, useForm, type SubmitHandler } from "react-hook-form";
 import type { DonationFormInputs } from "../../types/donation";
 import { HiCheck } from "react-icons/hi";
+import { mountDonationPayload } from "../../utils/helpers";
+import { useProducts } from "../../hooks/useProducts";
+import { toast } from "react-toastify";
 
 export const DonationForm = () => {
   const {
     register,
     handleSubmit,
     control,
-  } = useForm<DonationFormInputs>()
+  } = useForm<DonationFormInputs>();
+  const { loading, createDonation } = useProducts();
 
-  const onSubmit: SubmitHandler<DonationFormInputs> = (data) => console.log(data)
+  const onSubmit: SubmitHandler<DonationFormInputs> = async (data) => {
+      try {
+        const productPayload = mountDonationPayload(data);
+  
+        await createDonation(productPayload);
+  
+        return toast.success("Doação criada com sucesso!")
+      } catch (error) {
+        console.log(error);
+      }
+    }
 
   return (
     <form 
@@ -85,8 +99,18 @@ export const DonationForm = () => {
           pill
           type="submit"
         >
-          <HiCheck className="mr-2 h-5 w-5" />
-          Salvar
+          {
+            loading ?
+            <>
+              <Spinner aria-label="Alternate spinner button example" size="md" />
+              <span className="pl-3">Salvando...</span>
+            </>
+            :
+            <>
+              <HiCheck className="mr-2 h-5 w-5" />
+              Salvar
+            </>
+          }
         </Button>
       </div>
     </form>

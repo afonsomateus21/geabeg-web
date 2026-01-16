@@ -3,10 +3,43 @@ import { FaFolder } from "react-icons/fa";
 import { FiUsers } from "react-icons/fi";
 import { MdOutlineAttachMoney } from "react-icons/md";
 import { useLocation, useNavigate } from "react-router";
+import { api } from "../api";
 
 export const CustomSidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
+
+  const handleGenerateReport = async () => {
+    try {
+      const response = await api.post(
+        "/reports",
+        {
+          start_date: "2017-01-01",
+          end_date: "2035-12-31"
+        },
+        {
+          responseType: "blob"
+        }
+      );
+
+      const blob = new Blob([response.data]);
+      const url = window.URL.createObjectURL(blob);
+
+      const link = document.createElement("a");
+      link.href = url;
+
+      link.download = "relatorio.pdf";
+
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
 
   return (
     <Sidebar className="relative !bg-white">
@@ -42,6 +75,7 @@ export const CustomSidebar = () => {
               !bg-black
               [&:hover]:!bg-gray-800
             "
+            onClick={ handleGenerateReport }
           >
             <FaFolder className="mr-2 h-5 w-5" />
             Gerar Relatório

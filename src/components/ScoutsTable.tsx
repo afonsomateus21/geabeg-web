@@ -9,6 +9,7 @@ import { ActionModal } from "./ActionModal";
 import { useRef, useState } from "react";
 import { ScoutActionsMenu } from "./ScoutActionsMenu";
 import { useClickOutside } from "../hooks/useClickOutside";
+import { paymentCategories } from "../utils/constants";
 
 export function ScoutsTable({ scouts }: ScoutsTableProps) {
   const [openModal, setOpenModal] = useState(false);
@@ -50,7 +51,7 @@ export function ScoutsTable({ scouts }: ScoutsTableProps) {
             </HeaderIconButton>
           </TableHeadCell>
           <TableHeadCell>
-            <HeaderIconButton title="Idade">
+            <HeaderIconButton title="Pagamento">
               <MdOutlineArrowDropUp className="h-5 w-5" />
               <MdOutlineArrowDropDown className="h-5 w-5" />
             </HeaderIconButton>
@@ -61,7 +62,7 @@ export function ScoutsTable({ scouts }: ScoutsTableProps) {
         </TableHead>
         <TableBody className="divide-y">
           {
-            scouts.map((scout) => (
+            scouts?.map((scout) => (
               <TableRow 
                 key={scout.registration}
                 className="bg-white"
@@ -70,7 +71,12 @@ export function ScoutsTable({ scouts }: ScoutsTableProps) {
                   {scout.name}
                 </TableCell>
                 <TableCell className="text-gray-900">{scout.registration}</TableCell>
-                <TableCell className="text-gray-900">{scout.age} anos</TableCell>
+                <TableCell className="text-gray-900">
+                  {scout.product_list?.some(p => p.status !== "paid")
+                    ? paymentCategories.find(c => c.value === "pending")?.label
+                    : paymentCategories.find(c => c.value === "paid")?.label
+                  }
+                </TableCell>
                 <TableCell className="relative">
                   <button className="cursor-pointer">
                     <BsThreeDotsVertical 
