@@ -13,20 +13,23 @@ export const DonationForm = () => {
     register,
     handleSubmit,
     control,
+    reset
   } = useForm<DonationFormInputs>();
   const { loading, createDonation } = useProducts();
 
   const onSubmit: SubmitHandler<DonationFormInputs> = async (data) => {
-      try {
-        const productPayload = mountDonationPayload(data);
-  
-        await createDonation(productPayload);
-  
-        return toast.success("Doação criada com sucesso!")
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      const productPayload = mountDonationPayload(data);
+
+      await createDonation(productPayload);
+
+      return toast.success("Doação criada com sucesso!")
+    } catch (error) {
+      console.log(error);
+    } finally {
+      reset();
     }
+  }
 
   return (
     <form 
@@ -98,6 +101,7 @@ export const DonationForm = () => {
           size="md"
           pill
           type="submit"
+          className="bg-secondary"
         >
           {
             loading ?

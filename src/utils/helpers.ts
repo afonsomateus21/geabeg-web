@@ -67,17 +67,24 @@ export function studentPayloadToScout(
     age: student.age,
     cpf: student.cpf,
     rg: student.rg,
-    birthDate: student.birthDate,
+    birthDate: student.bith_date,
+    phoneNumber: student.phone_number ?? '',
     category: mapRamoToCategory(student.ramo),
-    responsible1: student.responsible1,
-    responsible2: student.responsible2,
+    responsible1: {
+      name: student.parents?.[0]?.parent_name,
+      contact: student.parents?.[0]?.contact,
+    },
+    responsible2: {
+      name: student.parents?.[1]?.parent_name,
+      contact: student.parents?.[1]?.contact,
+    },
     address: {
-      address: student.address?.street ?? '',
-      cep: student.address?.cep ?? '',
-      city: student.address?.city ?? '',
-      uf: student.address?.uf ?? '',
-      complement: student.address?.complement ?? '',
-      landmark: student.address?.reference ?? ''
+      address: student.adress ?? '',
+      cep: student.cep ?? '',
+      city: student.city ?? '',
+      uf: student.uf ?? '',
+      complement: student.complement ?? '',
+      landmark: student.reference ?? ''
     },
     product_list: student.product_list
   };
@@ -93,18 +100,24 @@ export function scoutToStudentPayload(
     age: scout.age,
     cpf: scout.cpf,
     rg: scout.rg,
-    birthDate: scout.birthDate,
+    bith_date: scout.birthDate,
     ramo: scout.category ?? "",
-    responsible1: scout.responsible1,
-    responsible2: scout.responsible2,
-    address: {
-      street: scout.address?.address ?? '',
-      cep: scout.address?.cep ?? '',
-      city: scout.address?.city ?? '',
-      uf: scout.address?.uf ?? '',
-      complement: scout.address?.complement ?? '',
-      reference: scout.address?.landmark ?? ''
-    }
+    parents: [
+      {
+        parent_name: scout.responsible1?.name ?? '',
+        contact: scout.responsible1?.contact ?? ''
+      },
+      {
+        parent_name: scout.responsible2?.name ?? '',
+        contact: scout.responsible2?.contact ?? ''
+      }
+    ],
+    adress: scout.address?.address ?? '',
+    cep: scout.address?.cep ?? '',
+    city: scout.address?.city ?? '',
+    uf: scout.address?.uf ?? '',
+    complement: scout.address?.complement ?? '',
+    reference: scout.address?.landmark ?? ''
   };
 }
 

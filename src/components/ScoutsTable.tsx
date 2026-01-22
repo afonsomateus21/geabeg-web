@@ -92,11 +92,7 @@ export function ScoutsTable({ scouts }: ScoutsTableProps) {
                           setOpenMenu(null);
                         }}
                         onEditMember={() => {
-                          navigate("/membros/editar", {
-                            state: {
-                              scout
-                            }
-                          })
+                          navigate(`/membros/editar/${scout.registration}`)
                         }}
                         onDeleteMember={() => console.log("Excluir", scout)}
                       />

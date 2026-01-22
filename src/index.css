@@ -2,6 +2,13 @@
 @import "flowbite-react/plugin/tailwindcss";
 @source "../.flowbite-react/class-list.json";
 
+@theme {
+  --color-primary: #FFF9F0;
+  --color-secondary: #CD7358;
+  --color-filter: #DABA8D;
+  --color-tertiary: #D4AF37;
+}
+
 .hide-scrollbar {
   scrollbar-width: none;       
   -ms-overflow-style: none;    

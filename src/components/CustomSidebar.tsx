@@ -1,4 +1,4 @@
-import { Button, Sidebar, SidebarItem, SidebarItemGroup, SidebarItems, Modal, Label, TextInput } from "flowbite-react";
+import { Button, Sidebar, SidebarItem, SidebarItemGroup, SidebarItems, Modal, Label, TextInput, SidebarLogo } from "flowbite-react";
 import { FaFolder, FaHome } from "react-icons/fa";
 import { FiUsers } from "react-icons/fi";
 import { MdOutlineAttachMoney } from "react-icons/md";
@@ -46,13 +46,18 @@ export const CustomSidebar = () => {
 
   return (
     <>
-      <Sidebar className="relative !bg-white">
+      <Sidebar className="relative">
         <SidebarItems className="mt-8">
           <SidebarItemGroup>
+            <SidebarItem className="hover:bg-white">
+              <div className="h-[120px] w-full flex justify-center items-center">
+                <img className="h-full w-[100px]" src="/logo-geabeg.png" />
+              </div>
+            </SidebarItem>
             <Button 
               className="
-                !bg-black
-                [&:hover]:!bg-gray-800
+                !bg-secondary
+                [&:hover]:!bg-secondary/70
               "
               onClick={() => navigate("/")}
             >
@@ -76,8 +81,8 @@ export const CustomSidebar = () => {
               pill 
               className="
                 absolute bottom-10
-                !bg-black
-                [&:hover]:!bg-gray-800
+                !bg-secondary
+                [&:hover]:!bg-secondary/70
               "
               onClick={() => setIsModalOpen(true)}
             >

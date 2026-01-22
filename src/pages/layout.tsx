@@ -6,7 +6,7 @@ import { searchInputTheme } from "../theme";
 
 export const Layout = () => {
   return (
-    <div className="h-screen grid grid-cols-[16rem_1fr] grid-rows-[4rem_1fr] bg-gray-200 overflow-hidden">
+    <div className="h-screen grid grid-cols-[16rem_1fr] grid-rows-[4rem_1fr] overflow-hidden">
       <div className="row-span-2">
         <CustomSidebar />
       </div>

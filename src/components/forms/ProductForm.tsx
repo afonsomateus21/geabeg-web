@@ -17,6 +17,7 @@ export const ProductForm = ({ scouts }: ProductFormProps) => {
     register,
     handleSubmit,
     control,
+    reset
   } = useForm<ProductFormInputs>();
   const { loading, createProduct } = useProducts();
 
@@ -30,12 +31,13 @@ export const ProductForm = ({ scouts }: ProductFormProps) => {
         scoutsSelected.includes(scout.registration)
       );
 
-
       await createProduct(productPayload, mountPayerPayload(scoutsPayload!));
 
       return toast.success("Produto criado com sucesso!")
     } catch (error) {
       console.log(error);
+    } finally {
+      reset();
     }
   }
 
@@ -176,6 +178,7 @@ export const ProductForm = ({ scouts }: ProductFormProps) => {
           size="md"
           pill
           type="submit"
+          className="bg-secondary"
         >
           {
             loading ?

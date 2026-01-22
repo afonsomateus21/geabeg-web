@@ -2,12 +2,13 @@ import { Button } from "flowbite-react";
 import { useState, useEffect, useRef } from "react";
 import { HiPencil, HiTrash } from "react-icons/hi";
 import { IoIosAddCircleOutline } from "react-icons/io";
-import { MdOutlineArrowDropDown } from "react-icons/md";
-import type { ProductCardProps } from "../types/product";
+import { MdOutlineArrowDropDown, MdOutlineAttachMoney } from "react-icons/md";
+import { PayerStatus, type ProductCardProps } from "../types/product";
 import ImagePlaceholder from "../assets/image-placeholder.png";
 import { convertToReal } from "../utils/helpers";
 import { ActionModal } from "./ActionModal";
 import type { Scout } from "../types/scout";
+import { FaMoneyBillWave } from "react-icons/fa";
 
 export const ProductCard = ({ product }: ProductCardProps) => {
   const [expanded, setExpanded] = useState(false);
@@ -61,7 +62,17 @@ export const ProductCard = ({ product }: ProductCardProps) => {
 
   return (
     <>
-      <div className="w-full bg-gray-200 rounded-xl overflow-hidden">
+      <div 
+        className={`
+          w-full
+          rounded-xl
+          overflow-hidden
+          border-2
+          transition-colors
+          duration-300
+          ${expanded ? "bg-filter border-filter" : "bg-primary border-secondary"}
+        `}
+      >
         <div className="flex">
           <div 
             className={`
@@ -71,7 +82,11 @@ export const ProductCard = ({ product }: ProductCardProps) => {
               flex 
               items-center 
               justify-center
-              ${expanded ? 'rounded-t-xl rounded-r-xl' : 'rounded-xl'}
+              ${
+                expanded 
+                ? 'rounded-t-xl rounded-r-xl' 
+                : 'rounded-xl'
+              }
             `}>
             <img src={ImagePlaceholder} className="w-full h-full" alt={product.name} />
           </div>
@@ -84,17 +99,19 @@ export const ProductCard = ({ product }: ProductCardProps) => {
               </div>
 
               <div className="flex gap-2">
-                <Button className="h-8 w-8 p-0 rounded-full flex items-center justify-center">
+                <Button className="h-8 w-8 p-0 rounded-full flex items-center justify-center bg-tertiary hover:bg-tertiary/70">
                   <HiPencil className="h-5 w-5" />
                 </Button>
-                <Button className="h-8 w-8 p-0 rounded-full flex items-center justify-center">
+                <Button className="h-8 w-8 p-0 rounded-full flex items-center justify-center bg-tertiary hover:bg-tertiary/70">
                   <HiTrash className="h-5 w-5" />
                 </Button>
               </div>
             </div>
 
             {!expanded && (
-              <div className="flex justify-between items-center px-4 pb-3">
+              <div 
+                className="flex justify-between items-center px-4 pb-3"
+              >
                 <button className="flex items-center gap-1 text-sm">
                   <IoIosAddCircleOutline />
                   Adicionar Aluno
@@ -112,7 +129,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
           <>
             <div
               className={`
-                bg-gray-50
+                bg-primary
                 overflow-visible
                 transition-all
                 duration-300
@@ -147,8 +164,16 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                       rounded-full 
                       text-xs 
                       font-semibold
+                      flex
+                      items-center
+                      gap-2
                       ${getStatusColor(payer.status)}
                     `}>
+                      {
+                        payer.status !== PayerStatus.ISENTO && payer.status !== PayerStatus.NOT_PAID
+                        ? <FaMoneyBillWave />
+                        : <MdOutlineAttachMoney />
+                      }
                       {getStatusLabel(payer.status)}
                     </span>
 
@@ -186,7 +211,7 @@ export const ProductCard = ({ product }: ProductCardProps) => {
                 </div>
               ))}
             </div>
-            <div className="flex justify-between items-center px-5 py-3 bg-gray-100">
+            <div className="flex justify-between items-center px-5 py-3 bg-filter">
               <button className="flex items-center gap-1 text-sm">
                 <IoIosAddCircleOutline />
                 Adicionar Aluno

@@ -19,6 +19,7 @@ export const Scouts = () => {
           size="sm"
           pill
           onClick={() => navigate("/membros/registrar")}
+          className="bg-secondary hover:bg-secondary/70"
         >
           <IoMdAdd className="mr-2 h-5 w-5" />
           Adicionar
@@ -26,16 +27,24 @@ export const Scouts = () => {
 
         <div className="flex gap-2">
           {
-            filters.map((filter) => (
-              <Button
-                key={filter.id}
-                size="sm"
-                outline={selectedFilter !== filter.id}
-                onClick={() => setSelectedFilter(filter.id)}
-              >
-                {filter.label}
-              </Button>
-            ))
+            filters.map((filter) => {
+              const isSelected = selectedFilter === filter.id;
+
+              return (
+                <Button
+                  key={filter.id}
+                  size="sm"
+                  outline={!isSelected}
+                  onClick={() => setSelectedFilter(filter.id)}
+                  className={`
+                    border-secondary text-secondary
+                    ${isSelected ? "bg-filter hover:bg-filter" : "bg-primary hover:bg-filter"}
+                  `}
+                >
+                  {filter.label}
+                </Button>
+              );
+            })
           }
         </div>
       </div>

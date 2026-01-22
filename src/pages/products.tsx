@@ -39,12 +39,11 @@ export const Products = () => {
                 <Button 
                   size="xs"
                   className={`
-                    hover:bg-gray-600
-                    border-bg-gray-400
-                    ${selectedFilter === filter.id && 'bg-gray-400'}  
+                    hover:bg-secondary/70
+                    border-bg-secondary
+                    ${selectedFilter === filter.id && 'bg-secondary'}  
                   `}
                   outline={selectedFilter !== filter.id}
-                  // onClick={() => setSelectedFilter(filter.id)}
                   onClick={() => handleChooseFilter(filter.id)}
                   color="gray"
                 >
@@ -76,6 +75,7 @@ export const Products = () => {
           size="sm"
           pill
           onClick={() => setOpenModal(true)}
+          className="bg-secondary hover:bg-secondary/70"
         >
           <IoMdAdd className="mr-2 h-5 w-5" />
           Adicionar
@@ -90,22 +90,38 @@ export const Products = () => {
         :
         (
           selectedFilter === "product" 
-          ? products?.map((product) => (
-            <div className="mb-2">
-              <ProductCard 
-                key={product.id}
-                product={product}
-              />
+          ? (
+            products?.length === 0 
+            ? 
+            <div className="w-full flex justify-center">
+              Não há produtos para mostrar
             </div>
-          ))
-          : products?.map((product) => (
-            <div className="mb-2">
-              <DonationCard 
-                key={product.id}
-                product={product}
-              />
+            : 
+            products?.map((product) => (
+              <div className="mb-2">
+                <ProductCard 
+                  key={product.id}
+                  product={product}
+                />
+              </div>
+            ))
+          )          
+          : (
+            products?.length === 0
+            ? 
+            <div className="w-full flex justify-center">
+              Não há doações para mostrar
             </div>
-          ))
+            : 
+            products?.map((product) => (
+              <div className="mb-2">
+                <DonationCard 
+                  key={product.id}
+                  product={product}
+                />
+              </div>
+            ))
+          )
         )
       }
 

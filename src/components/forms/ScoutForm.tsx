@@ -1,4 +1,4 @@
-import { Button, Label, Select, Spinner, Textarea, TextInput } from "flowbite-react";
+import { Button, Label, Select, Spinner, TextInput } from "flowbite-react";
 import { useForm, useWatch, type SubmitHandler } from "react-hook-form";
 import { HiCheck } from "react-icons/hi";
 import type { ScoutFormInputs } from "../../types/scout";
@@ -6,9 +6,9 @@ import { scoutCategories, ufs } from "../../utils/constants";
 import { useEffect } from "react";
 import { viaCepAPI } from "../../services/api";
 import { maskCEP, maskCPF, maskDate, maskPhone, mountStudentPayload } from "../../utils/helpers";
-import { InputImage } from "../inputs/InputImage";
 import { useStudents } from "../../hooks/useStudents";
 import { toast } from "react-toastify";
+import { Navigate, useNavigate, useParams } from "react-router";
 
 export const ScoutForm = () => {
   const {
@@ -16,6 +16,7 @@ export const ScoutForm = () => {
     control,
     setValue,
     handleSubmit,
+    reset
   } = useForm<ScoutFormInputs>();
 
   const cep = useWatch({
@@ -23,7 +24,46 @@ export const ScoutForm = () => {
     name: "address.cep",
   });
 
-  const { loading, createStudent } = useStudents();
+  const { loading, createStudent, getStudent, updateStudent } = useStudents();
+  const { student_id } = useParams();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!student_id) return;
+
+    async function fetchStudent() {
+      const scout = await getStudent(student_id!);
+      if (!scout) return;
+
+      reset({
+        name: scout.name,
+        age: scout.age,
+        category: scout.category,
+        cpf: maskCPF(scout.cpf!) ?? '',
+        phoneNumber: maskPhone(scout.phoneNumber!) ?? '',
+        rg: scout.rg,
+        birthDate: scout.birthDate,
+        responsible1: {
+          name: scout.responsible1?.name ?? '',
+          contact: maskPhone(scout.responsible1?.contact!) ?? '',
+        },
+        responsible2: {
+          name: scout.responsible2?.name ?? '',
+          contact: maskPhone(scout.responsible2?.contact!) ?? '',
+        },
+        address: {
+          city: scout.address?.city ?? '',
+          uf: scout.address?.uf ?? '',
+          address: scout.address?.address ?? '',
+          complement: scout.address?.complement ?? '',
+          landmark: scout.address?.landmark ?? '',
+          cep: scout.address?.cep ?? '',
+        },
+      });
+    }
+
+    fetchStudent();
+  }, [student_id, getStudent, setValue, reset])
  
   useEffect(() => {
     if (!cep) return;
@@ -51,10 +91,14 @@ export const ScoutForm = () => {
 
 
   const onSubmit: SubmitHandler<ScoutFormInputs> = async (data) => {
-    console.log("entrou")
-    console.log(data)
     try {
       const payload = mountStudentPayload(data);
+
+      if (student_id) {
+        await updateStudent(student_id, mountStudentPayload(data));
+
+        return toast.success("Estudante atualizado com sucesso!");
+      }
 
       await createStudent(payload);
 
@@ -62,15 +106,17 @@ export const ScoutForm = () => {
     } catch (error) {
       console.log(error);
       return toast.error("Erro ao criar estudante!");
+    } finally {
+      navigate("/membros");
     }
   }
 
   return (
     <form 
-      className="flex w-full h-full py-5 pr-5"
+      className="flex w-full h-auto py-5 pr-5 bg-primary"
       onSubmit={handleSubmit(onSubmit)}
     >
-      <div className="flex-1 flex flex-col items-center h-full gap-5  ">
+      {/* <div className="flex-1 flex flex-col items-center h-full gap-5  ">
         <InputImage />
         <div className="w-[223px] flex-1 min-h-0 flex flex-col">
           <div className="mb-2 block">
@@ -88,9 +134,9 @@ export const ScoutForm = () => {
             {...register("observations")}
           />
         </div>
-      </div>
+      </div> */}
 
-      <div className="flex-5 flex flex-col items-center justify-evenly gap-3 h-full border border-black rounded-2xl p-4">
+      <div className="flex-5 flex flex-col items-center justify-evenly gap-3 h-full rounded-2xl p-4">
         <div className="flex w-full gap-2">
           <div className="flex-5">
             <div className="mb-2 block">
@@ -160,19 +206,7 @@ export const ScoutForm = () => {
               })}
             />
           </div>
-          <div className="flex-1">
-            <div className="mb-2 block">
-              <Label htmlFor="birthdate">Data de Nascimento</Label>
-            </div>
-            <TextInput
-              type="text"
-              placeholder="DD/MM/AAAA"
-              {...register("birthDate")}
-              onChange={(e) => {
-                e.target.value = maskDate(e.target.value);
-              }}
-            />
-          </div>
+  
           <div className="flex-1">
             <div className="mb-2 block">
               <Label htmlFor="rg">RG</Label>
@@ -187,7 +221,20 @@ export const ScoutForm = () => {
           </div>
         </div>
 
-        <div>
+        <div className="flex w-full gap-2">
+          <div className="flex-1">
+            <div className="mb-2 block">
+              <Label htmlFor="birthdate">Data de Nascimento</Label>
+            </div>
+            <TextInput
+              type="text"
+              placeholder="DD/MM/AAAA"
+              {...register("birthDate")}
+              onChange={(e) => {
+                e.target.value = maskDate(e.target.value);
+              }}
+            />
+          </div>
           <div className="flex-1">
             <div className="mb-2 block">
               <Label htmlFor="contact1">Telefone</Label>
@@ -366,24 +413,27 @@ export const ScoutForm = () => {
           </div>
         </div>
 
-        <Button 
-          size="md"
-          pill
-          type="submit"
-        >
-          {
-            loading ?
-            <>
-              <Spinner aria-label="Alternate spinner button example" size="md" />
-              <span className="pl-3">Salvando...</span>
-            </>
-            :
-            <>
-              <HiCheck className="mr-2 h-5 w-5" />
-              Salvar
-            </>
-          }          
-        </Button>
+        <div className="pb-2">      
+          <Button 
+            size="md"
+            pill
+            type="submit"
+            className="bg-secondary"
+          >
+            {
+              loading ?
+              <>
+                <Spinner aria-label="Alternate spinner button example" size="md" />
+                <span className="pl-3">Salvando...</span>
+              </>
+              :
+              <>
+                <HiCheck className="mr-2 h-5 w-5" />
+                Salvar
+              </>
+            }          
+          </Button>
+        </div>
       </div>
     </form>
   );

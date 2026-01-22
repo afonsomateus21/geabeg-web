@@ -8,6 +8,7 @@ interface StudentContentProps {
   updateStudent: (id: string, payload: StudentPayload) => Promise<void>;
   fetchStudents: () => Promise<void>;
   removeStudent: (id: string) => Promise<void>;
+  getStudent: (id: string) => Promise<Scout | null>;
   onConfirmPayment: (product_id: string, student_id: string, status: string) => Promise<void>;
 }
 

@@ -58,6 +58,17 @@ export const StudentProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
+  const getStudent = async (id: string): Promise<Scout | null> => {
+    try {
+      const response = await api.get(`/students/${id}`);
+      return studentPayloadToScout(response.data);
+    } catch (error) {
+      console.error(error);
+      return null;
+    }
+  };
+
+
   const onConfirmPayment = async (product_id: string, student_id: string, status: string) => {
     try {
       setLoading(true);
@@ -92,6 +103,7 @@ export const StudentProvider = ({ children }: { children: ReactNode }) => {
         fetchStudents,
         updateStudent,
         removeStudent,
+        getStudent,
         onConfirmPayment
       }}
     >

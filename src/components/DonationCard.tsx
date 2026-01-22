@@ -5,7 +5,7 @@ import type { DonationCardProps } from "../types/product";
 
 export const DonationCard = ({ product }: DonationCardProps) => {
   return (
-    <div className="w-full bg-gray-200 rounded-xl overflow-hidden">
+    <div className="w-full bg-primary rounded-xl overflow-hidden">
       <div className="flex">
         <div className="flex-1 flex flex-col">
           <div className="flex justify-between p-4">

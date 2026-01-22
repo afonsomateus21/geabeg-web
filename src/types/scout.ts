@@ -38,6 +38,7 @@ export interface Scout {
   registration: string;
   name: string;
   age: number;
+  phoneNumber?: string;
   category?: ScoutCategoryType;
   cpf?: string;
   birthDate?: string;
@@ -54,7 +55,7 @@ export interface ScoutFormInputs {
   age: number;
   category: ScoutCategoryType;
   cpf: string;
-  birthDate: Date;
+  birthDate: string;
   rg: string;
   phoneNumber: string;
   responsible1: Responsible;
@@ -86,35 +87,29 @@ export interface ProductList {
   product_id: string;
 }
 
+export interface Parent {
+  parent_name: string;
+  contact: string;
+}
+
 export interface StudentPayload {
   id?: number;
   student_id?: string;
-
   name: string;
   cpf?: string;
   rg?: string;
-
-  birthDate?: string;
+  bith_date?: string;
   age: number;
-
   ramo: string;
-
-  phoneNumber?: string;
-
-  address?: {
-    street: string;
-    cep: string;
-    city: string;
-    uf: string;
-    complement?: string;
-    reference?: string;
-  };
-
-  responsible1?: Responsible;
-  responsible2?: Responsible;
-
+  phone_number?: string;
+  adress?: string;
+  cep: string;
+  city: string;
+  uf: string;
+  complement?: string;
+  reference?: string;
+  parents: Parent[];
   product_list?: ProductList[];
-
   createdAt?: string;
   updatedAt?: string;
 }
