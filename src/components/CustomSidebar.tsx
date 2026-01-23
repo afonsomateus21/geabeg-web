@@ -59,7 +59,7 @@ export const CustomSidebar = () => {
                 !bg-secondary
                 [&:hover]:!bg-secondary/70
               "
-              onClick={() => navigate("/")}
+              onClick={() => navigate("/produtos")}
             >
               <FaHome className="h-6 w-6" />
             </Button>
