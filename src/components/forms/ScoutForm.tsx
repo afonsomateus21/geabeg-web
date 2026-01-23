@@ -8,7 +8,7 @@ import { viaCepAPI } from "../../services/api";
 import { maskCEP, maskCPF, maskDate, maskPhone, mountStudentPayload } from "../../utils/helpers";
 import { useStudents } from "../../hooks/useStudents";
 import { toast } from "react-toastify";
-import { Navigate, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 export const ScoutForm = () => {
   const {

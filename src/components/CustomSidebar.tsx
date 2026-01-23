@@ -1,4 +1,4 @@
-import { Button, Sidebar, SidebarItem, SidebarItemGroup, SidebarItems, Modal, Label, TextInput, SidebarLogo } from "flowbite-react";
+import { Button, Sidebar, SidebarItem, SidebarItemGroup, SidebarItems, Modal, Label, TextInput } from "flowbite-react";
 import { FaFolder, FaHome } from "react-icons/fa";
 import { FiUsers } from "react-icons/fi";
 import { MdOutlineAttachMoney } from "react-icons/md";
