@@ -10,8 +10,14 @@ export const CustomSidebar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [startDate, setStartDate] = useState<string>("2017-01-01");
-  const [endDate, setEndDate] = useState<string>("2035-12-31");
+  
+  const getCurrentDate = () => {
+    const today = new Date();
+    return today.toISOString().split('T')[0];
+  };
+  
+  const [startDate, setStartDate] = useState<string>(getCurrentDate());
+  const [endDate, setEndDate] = useState<string>(getCurrentDate());
 
   const handleGenerateReport = async () => {
     try {
