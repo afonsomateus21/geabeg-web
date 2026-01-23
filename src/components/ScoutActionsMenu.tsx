@@ -1,7 +1,6 @@
 import type { ScoutActionsMenuProps } from "../types/scout"
 
 export const ScoutActionsMenu = ({ 
-  onOpenPayment, 
   onEditMember, 
   onDeleteMember 
 }: ScoutActionsMenuProps) => {
@@ -18,13 +17,6 @@ export const ScoutActionsMenu = ({
       shadow-lg
       z-50
     ">
-      <button
-        className="w-full px-4 py-2 text-left hover:bg-gray-100"
-        onClick={onOpenPayment}
-      >
-        Pagamento
-      </button>
-
       <button
         className="w-full px-4 py-2 text-left hover:bg-gray-100"
         onClick={onEditMember}

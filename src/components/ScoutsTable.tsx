@@ -3,34 +3,26 @@ import { Table, TableBody, TableCell, TableHead, TableHeadCell, TableRow } from 
 import { scoutsTableTheme } from "../theme";
 import { HeaderIconButton } from "./HeaderIconButton";
 import { MdOutlineArrowDropDown, MdOutlineArrowDropUp } from "react-icons/md";
-import type { Scout, ScoutsTableProps } from "../types/scout";
+import type { ScoutsTableProps } from "../types/scout";
 import { BsThreeDotsVertical } from "react-icons/bs";
-import { ActionModal } from "./ActionModal";
 import { useRef, useState } from "react";
 import { ScoutActionsMenu } from "./ScoutActionsMenu";
 import { useClickOutside } from "../hooks/useClickOutside";
 import { useNavigate } from "react-router";
+import { useStudents } from "../hooks/useStudents";
 
 export function ScoutsTable({ scouts }: ScoutsTableProps) {
-  const [openModal, setOpenModal] = useState(false);
-  const [selectedScout, setSelectedScout] = useState<Scout | null>(null);
   const [openMenu, setOpenMenu] = useState<string | null>(null);
   const menuRef = useRef<HTMLDivElement | null>(null);
   useClickOutside(menuRef, () => setOpenMenu(null));
   const navigate = useNavigate();
+  const {removeStudent} = useStudents();
 
   const toggleMenu = (registration: string) => {
     setOpenMenu((prev) =>
       prev === registration ? null : registration
     );
   };
-
-  const handleOpenModal = (scout: Scout) => {
-    setOpenModal(true);
-    setSelectedScout(scout);
-  }
-
-  const onCloseModal = () => setOpenModal(false);
 
   return (
     <div className="overflow-x-auto">
@@ -87,14 +79,10 @@ export function ScoutsTable({ scouts }: ScoutsTableProps) {
                   {openMenu === scout.registration && (
                     <div ref={menuRef}>
                       <ScoutActionsMenu 
-                        onOpenPayment={() => {
-                          handleOpenModal(scout);
-                          setOpenMenu(null);
-                        }}
                         onEditMember={() => {
                           navigate(`/membros/editar/${scout.registration}`)
                         }}
-                        onDeleteMember={() => console.log("Excluir", scout)}
+                        onDeleteMember={() => removeStudent(scout.registration!)}
                       />
                     </div>
                   )}
@@ -104,16 +92,6 @@ export function ScoutsTable({ scouts }: ScoutsTableProps) {
           }
         </TableBody>
       </Table>
-      {
-        selectedScout && (
-          <ActionModal 
-            openModal={openModal}
-            onCloseModal={onCloseModal}
-            scout={selectedScout!}
-            productId=""
-          />
-        )
-      }
     </div>
   );
 }

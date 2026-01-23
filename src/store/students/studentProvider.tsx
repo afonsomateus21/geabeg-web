@@ -1,5 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
-import type { Scout, StudentPayload } from "../../types/scout";
+import type { Scout, ScoutCategoryType, StudentPayload } from "../../types/scout";
 import { api } from "../../api";
 import { studentPayloadToScout } from "../../utils/helpers";
 import { StudentContext } from "./studentContext";
@@ -8,10 +8,18 @@ export const StudentProvider = ({ children }: { children: ReactNode }) => {
   const [loading, setLoading] = useState(false);
   const [students, setStudents] = useState<Scout[]>([]);
 
-  const fetchStudents = async () => {
+  const fetchStudents = async (category?: ScoutCategoryType | "todos") => {
     try {
       setLoading(true);
-      const response = await api.get<StudentPayload[]>("/students");
+      const params: { ramo?: ScoutCategoryType } = {};
+
+      if (category && category !== "todos") {
+        params.ramo = category;
+      }
+      
+      const response = await api.get<StudentPayload[]>("/students", {
+        params
+      });
 
       const studentsMapped = response.data.map(studentPayloadToScout);
       setStudents(studentsMapped);

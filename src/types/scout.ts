@@ -70,7 +70,6 @@ export interface ScoutBasicEditFormInputs {
 }
 
 export interface ScoutActionsMenuProps {
-  onOpenPayment: () => void;
   onDeleteMember: () => void;
   onEditMember: () => void;
 }

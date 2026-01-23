@@ -1,5 +1,4 @@
 import { createBrowserRouter } from "react-router";
-import { Home } from "./pages/home";
 import { Layout } from "./pages/layout";
 import { Products } from "./pages/products";
 import { Scouts } from "./pages/scouts";
@@ -9,7 +8,7 @@ const router = createBrowserRouter([
   { path: "/", 
     Component: Layout,
     children: [
-      { path: "", Component: Home },
+      { path: "", Component: Products },
       { path: "produtos", Component: Products },
       { 
         path: "membros", 

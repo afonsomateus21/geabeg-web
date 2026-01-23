@@ -10,7 +10,16 @@ import { useStudents } from "../hooks/useStudents";
 export const Scouts = () => {
   const [selectedFilter, setSelectedFilter] = useState<FilterId | null>(null);
   const navigate = useNavigate();
-  const { students, loading } = useStudents();
+  const { students, fetchStudents, loading } = useStudents();
+
+  const handleChangeFilter = async (id: FilterId) => {
+    try {
+      setSelectedFilter(id);
+      await fetchStudents(id);
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   return (
     <div className="w-full h-full">
@@ -35,7 +44,7 @@ export const Scouts = () => {
                   key={filter.id}
                   size="sm"
                   outline={!isSelected}
-                  onClick={() => setSelectedFilter(filter.id)}
+                  onClick={() => handleChangeFilter(filter.id)}
                   className={`
                     border-secondary text-secondary
                     ${isSelected ? "bg-filter hover:bg-filter" : "bg-primary hover:bg-filter"}

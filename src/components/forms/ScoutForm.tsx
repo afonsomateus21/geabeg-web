@@ -35,6 +35,8 @@ export const ScoutForm = () => {
       const scout = await getStudent(student_id!);
       if (!scout) return;
 
+      console.log(scout);
+
       reset({
         name: scout.name,
         age: scout.age,
